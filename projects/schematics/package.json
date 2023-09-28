@@ -1,6 +1,6 @@
 {
-  "name": "@po-ui/ng-schematics",
-  "version": "0.0.0-PLACEHOLDER",
+  "name": "domingues-ng-schematics",
+  "version": "1.1.3",
   "tag": "next",
   "description": "PO UI - Schematics",
   "author": "PO UI",
