@@ -1,4 +1,4 @@
-name: PO-UI Publish
+name: PO-UI DEVELOPMENT DEPLOY
 
 # URL para os pacotes po-ui no npm
 env:
@@ -6,7 +6,9 @@ env:
   WORKING_DIR: /home/runner/work/po-angular-testes-spike/po-angular-testes-spike/po-angular
 
 on:
-  workflow_dispatch:
+    push:
+        branches:
+            - development
 
 jobs:
   build-and-publish:
@@ -34,9 +36,6 @@ jobs:
       run: npm install && npm run build
       working-directory: ${{env.WORKING_DIR}}
 
-    # Pega a última versão dos pacotes publicados no npm e armazena em variáveis
-    - run: echo "SCHEMATICS_LAST_PUBLISHED_VERSION=$(npm view @${{ env.SCHEMATICS_NPM_PATH }} dist-tags.next)" >> $GITHUB_ENV
-
     # Pega a versão no package.json
     - name: Get package.json version.
       id: package-version
@@ -50,14 +49,14 @@ jobs:
       with:
         node-version: '16.x'
         registry-url: 'https://registry.npmjs.org'
-    - run: npm publish ${{env.WORKING_DIR}}/dist/ng-schematics --ignore-scripts
-      env:
-        PACKAGE_VERSION: ${{ steps.package-version.outputs.current-version }}
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  
-
-    - name: ng-schematics - add "latest" tag
-      run: npm dist-tags add @${{ env.SCHEMATICS_NPM_PATH }}@${{ env.PACKAGE_VERSION }}
-      working-directory: ${{env.WORKING_DIR}}
+    - run: npm publish ${{env.WORKING_DIR}}/dist/ng-schematics --tag beta --ignore-scripts
       env:
         PACKAGE_VERSION: ${{ steps.package-version.outputs.current-version }}
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Trigger Azure DevOps Pipeline THF-COMPONENTS
+      uses: Azure/pipelines@v1.2
+      with:
+        azure-devops-project-url: 'https://dev.azure.com/totvstfs/THF'
+        azure-pipeline-name: 'thf-components-development-ci'
+        azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
