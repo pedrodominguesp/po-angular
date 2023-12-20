@@ -1,7 +1,6 @@
 {
   "name": "@teste-poui-deploy/ng-schematics",
-  "version": "16.1.1",
-  "tag": "next",
+  "version": "16.1.2",
   "description": "PO UI - Schematics",
   "author": "PO UI",
   "license": "MIT",
