@@ -3,7 +3,7 @@ name: PO-UI Publish
 # URL para os pacotes po-ui no npm
 env:
   SCHEMATICS_NPM_PATH: po-ui/ng-schematics
-  WORKING_DIR: /home/runner/work/po-angular/po-angular/po-angular
+  WORKING_DIR: /home/runner/work/po-angular-testes-spike/po-angular-testes-spike/po-angular
 
 on:
   workflow_dispatch:
